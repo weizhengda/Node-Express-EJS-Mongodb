@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- 引入公用的头部 -->
+    <%- include('common/header.ejs', {title: '首页'}) %>
+
+
+    <% if (nickname) {%>
+        <p>欢迎用户 <%= nickname %></p>
+        <a href="/logout">退出</a>
+    <%} else {%>
+        <a href="/login">登录</a>
+    <%}%>
+
+
+    <a href="/reg">注册</a>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- 引入公用的头部 -->
+    <%- include('common/header.ejs', {title: '注册'}) %>
+
+    <!-- 注册表单 -->
+
+    <form action="/users/addUser" method="post">
+
+        <label>
+            用户名：
+            <input type="text" name="username">
+        </label>
+        <label>
+            密　码：
+            <input type="password" name="password">
+        </label>
+        <label>
+            昵　称：
+            <input type="text" name="nickname">
+        </label>
+        <label>
+            <input type="submit" value="注册提交">
+        </label>
+
+    </form>
+
+    <p><%= err %></p>
+</body>
+</html>
