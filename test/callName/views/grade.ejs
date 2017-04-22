@@ -2,18 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script type="application/javascript" src="/js/jquey.js"></script>
+    <title><%= gradeId %>-牛逼点名系统</title>
+    <link rel='stylesheet' href='/css/grade.css'/>
+    <script type="text/javascript" src="/js/jquery.js"></script>
 </head>
 <body>
-    <h3>班级-sz<%= className%></h3>
-    <h1></h1>
-    <button id="start">开始点名</button><button id="stop">暂停</button>
-    <a href="/users/list?id=<%= className%>">查看列表</a>
+<h3>班级-sz<%= gradeId %></h3>
+<h1></h1>
+<button id="start">开始点名</button>
+<button id="stop">暂停</button>
+<a href="/users/list?gradeId=<%= gradeId %>">查看列表</a>
 </body>
 </html>
 <script>
-    $('#start').on('click',function () {
+    //保存后台存过来的数据
+	var nameList = <%- nameList %>;
+	var timer;
+	var uid = '';
+	//开始按钮点击事件
+	$('#start').on('click', function () {
+		$('#start').prop('disabled', true);
+		timer = setInterval(function () {
+			var num = parseInt(Math.random() * nameList.length);
+			$('h1').html(nameList[num].name);
+			uid = nameList[num].uid;
+		}, 100);
+	});
+	//暂停按钮点击事件
+	$('#stop').on('click', function () {
+		$('#start').prop('disabled', false);
+		clearInterval(timer);
+		var name = $('h1').text();
+		//调用ajax
+		ajax(uid);
+		alert('恭喜:' + name + '!');
 
 	})
+	//封装 AJAX
+	function ajax(name) {
+		var xhr = "";
+		if (window.XMLHttpRequest) {
+			xhr = new XMLHttpRequest();
+		} else {
+			xhr = new ActiveXObject('microsoft.XMLHTTP');
+		}
+		xhr.open('get', 'http://localhost:3000/users/addCounts?uid=' + uid, true);
+		xhr.send(null);
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				return JSON.parse(xhr.responseText);
+			}
+		}
+	}
+
 </script>

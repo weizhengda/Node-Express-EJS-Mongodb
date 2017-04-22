@@ -2,42 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel='stylesheet' href='/css/list.css' />
+    <title><%= gradeId %>-牛逼点名系统</title>
+    <link rel='stylesheet' href='/css/list.css'/>
 </head>
 <body>
-    <h3>班级-sz<%= className%></h3>
-    <table>
-        <thead>
-          <tr>
-               <td>ID</td>
-               <td>姓名</td>
-               <td>中奖次数</td>
-          </tr>
-        </thead>
-        <tbody>
-
-        <% for (var i = 0; i < dataList.length; i++) {%>
-
-        <tr>
-            <td><%= dataList[i].uid %></td>
-            <td><%- dataList[i].name %></td>
-            <td><%= dataList[i].counts %></td>
-        </tr>
-
-        <%} %>
-
-        <tr>
-            <td colspan="3">
-                <a href="/users/list?pageNo=1">首页</a>
-                <a href="/users/list?pageNo=<%= pageNo > 1 ? (parseInt(pageNo) - 1) : 1 %>">上一页</a>
-                <a href="/users/list?pageNo=<%= pageNo < pageCounts ? (parseInt(pageNo) + 1) : pageCounts %>">下一页</a>
-                <a href="/users/list?pageNo=<%= pageCounts %>">尾页</a>
-                <span><%= pageNo %> / <%= pageCounts %></span>
-            </td>
-        </tr>
-
-        </tbody>
-    </table>
+<h3>班级-sz<%= gradeId %></h3>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>姓名</th>
+        <th>中奖次数</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for (var i = 0; i < dataList.length; i++) { %>
+    <% if(dataList[i].counts >= 5){ %>
+    <tr class='red'>
+        <% } %>
+        <td><%= dataList[i].uid %></td>
+        <td><%- dataList[i].name %></td>
+        <td><%= dataList[i].counts %></td>
+    </tr>
+    <% } %>
+    </tbody>
+</table>
+<div>
+    <a href="/users/list?gradeId=<%= gradeId %>&pageNo=1">首页</a>
+    <a href="/users/list?gradeId=<%= gradeId %>&pageNo=<%= pageNo > 1 ? (parseInt(pageNo) - 1) : 1 %>">上一页</a>
+    <a href="/users/list?gradeId=<%= gradeId %>&pageNo=<%= pageNo < pageCounts ? (parseInt(pageNo) + 1) : pageCounts %>">下一页</a>
+    <a href="/users/list?gradeId=<%= gradeId %>&pageNo=<%= pageCounts %>">尾页</a>
+    <span><%= pageNo %> / <%= pageCounts %></span>
+</div>
 </body>
 </html>

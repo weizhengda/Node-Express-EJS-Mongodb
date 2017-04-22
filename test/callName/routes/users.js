@@ -9,20 +9,30 @@ var DB_CONN_STR = 'mongodb://localhost:27017/random';
 var router = express.Router();
 /* GET users listing. */
 
-router.get('/list', function(req, res, next) {
-	var className = req.query.id;
-	
-	// 获取所有的列表数据
-	
-	MongoClient.connect(DB_CONN_STR, function(err, db) {
+router.get('/addCounts', function (req, res, next) {
+	var uid = parseInt(req.query.uid);
+	MongoClient.connect(DB_CONN_STR, function (err, db) {
 		if (err) {
 			console.log(err);
 		} else {
 			var coll = db.collection('sz1701');
-			
+			coll.update({uid: uid}, {$inc: {counts: 1}});
+			db.close();
+		}
+	})
+});
+
+router.get('/list', function (req, res, next) {
+	var gradeId = req.query.gradeId;
+	// 获取所有的列表数据
+	MongoClient.connect(DB_CONN_STR, function (err, db) {
+		if (err) {
+			console.log(err);
+		} else {
+			var coll = db.collection('sz'+parseInt(gradeId));
 			async.waterfall([
-				function(cb) {
-					coll.find().count(function(err, num) {
+				function (cb) {
+					coll.find().count(function (err, num) {
 						if (err) {
 							console.log(err);
 						} else {
@@ -30,14 +40,14 @@ router.get('/list', function(req, res, next) {
 						}
 					})
 				},
-				function(num, cb) {
+				function (num, cb) {
 					
 					var counts = num;       // 总条数
 					var pageSize = 10;       // 每页显示的条数
 					var pageCounts = Math.ceil(counts / pageSize);  // 总的页数
 					var pageNo = req.query.pageNo ? req.query.pageNo : 1;
 					
-					coll.find().skip( (pageNo - 1) * pageSize ).limit(pageSize).toArray(function(err, data) {
+					coll.find().skip((pageNo - 1) * pageSize).limit(pageSize).sort({counts: -1}).toArray(function (err, data) {
 						if (err) {
 							console.log(err);
 							res.send('没有信息');
@@ -52,13 +62,13 @@ router.get('/list', function(req, res, next) {
 						}
 					})
 				}
-			], function(err, result) {
+			], function (err, result) {
 				
 				if (err) {
 					console.log(err);
 				} else {
 					res.render('list.ejs', {
-						className:className,
+						gradeId: gradeId,
 						dataList: result[0],
 						pageCounts: result[1],
 						pageNo: result[2]

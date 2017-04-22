@@ -1,9 +1,32 @@
 
+a{
+    text-decoration: none;
+}
+h3{
+    margin-left:100px;
+}
 table{
     width:1000px;
+    margin:50px auto;
 }
 
-table  td{
+th,  td{
     border:1px solid #000000;
+    text-align: center;
+}
+tbody tr{
+    color:#fff;
+}
+tbody tr:nth-child(odd){
+    background:green;
+}
+tbody tr:nth-child(even){
+    background:mediumpurple;
+}
+
+tbody tr.red td{
+    border:3px solid red;
+}
+div{
     text-align: center;
 }
