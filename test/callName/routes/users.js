@@ -11,11 +11,12 @@ var router = express.Router();
 
 router.get('/addCounts', function (req, res, next) {
 	var uid = parseInt(req.query.uid);
+	var gradeId=req.query.gradeId;
 	MongoClient.connect(DB_CONN_STR, function (err, db) {
 		if (err) {
 			console.log(err);
 		} else {
-			var coll = db.collection('sz1701');
+			var coll = db.collection('sz'+parseInt(gradeId));
 			coll.update({uid: uid}, {$inc: {counts: 1}});
 			db.close();
 		}

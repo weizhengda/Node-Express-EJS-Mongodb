@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title><%= gradeId %>-牛逼点名系统</title>
     <link rel='stylesheet' href='/css/list.css'/>
+    <script type="text/javascript" src="/js/jquery.js"></script>
 </head>
 <body>
 <h3>班级-sz<%= gradeId %></h3>
@@ -30,9 +31,21 @@
 <div>
     <a href="/users/list?gradeId=<%= gradeId %>&pageNo=1">首页</a>
     <a href="/users/list?gradeId=<%= gradeId %>&pageNo=<%= pageNo > 1 ? (parseInt(pageNo) - 1) : 1 %>">上一页</a>
+    <span id="pageCode"></span>
     <a href="/users/list?gradeId=<%= gradeId %>&pageNo=<%= pageNo < pageCounts ? (parseInt(pageNo) + 1) : pageCounts %>">下一页</a>
     <a href="/users/list?gradeId=<%= gradeId %>&pageNo=<%= pageCounts %>">尾页</a>
     <span><%= pageNo %> / <%= pageCounts %></span>
 </div>
 </body>
 </html>
+<script>
+    var pageCounts = <%=pageCounts%>;
+	for (var i = 1; i <=pageCounts;i++) {
+		 var code = $("<a/>");
+		 code.attr('href',"/users/list?gradeId=<%= gradeId %>&pageNo="+i+"");
+		 code.css({'border':"1px solid #ccc","padding":"3px","margin":"0 3px"});
+		 code.text(i);
+		 console.log(code);
+		$('#pageCode').append(code);
+	}
+</script>
